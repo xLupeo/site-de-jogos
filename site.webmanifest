@@ -1,14 +1,29 @@
 {
   "name": "ARCADE Setor 7",
   "short_name": "ARCADE",
-  "description": "Hub de mini-jogos: Campo Minado, Termo, 2048, Snake, Memória, Velha, Lights Out, Liga 4 e Breakout.",
-  "start_url": "/",
+  "description": "Hub de 9 mini-jogos: Campo Minado, Termo, 2048, Snake, Memória, Velha, Lights Out, Liga 4 e Breakout — com placar online global, modo claro/escuro e haptics.",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "any",
   "background_color": "#0e141b",
   "theme_color": "#0e141b",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "categories": ["games", "entertainment"],
   "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-192-maskable.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Campo Minado", "short_name": "Minado", "url": "/#mines", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Termo", "short_name": "Termo", "url": "/#termo", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "2048", "short_name": "2048", "url": "/#g2048", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Breakout", "short_name": "Breakout", "url": "/#breakout", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] }
   ]
 }

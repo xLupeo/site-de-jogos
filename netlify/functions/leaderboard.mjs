@@ -10,29 +10,18 @@ function json(b,st=200){ return new Response(JSON.stringify(b),{status:st,header
 export default async (req)=>{
   if(req.method==="OPTIONS") return new Response("",{headers:CORS});
   if(!sql) return json({error:"database not configured",configured:false},503);
-  try{
-    await ensureTable(); const url=new URL(req.url);
-    if(req.method==="GET"){
-      const game=url.searchParams.get("game"); if(!GAMES[game]) return json({error:"invalid game"},400);
+  try{ await ensureTable(); const url=new URL(req.url);
+    if(req.method==="GET"){ const game=url.searchParams.get("game"); if(!GAMES[game]) return json({error:"invalid game"},400);
       let limit=parseInt(url.searchParams.get("limit")||"50",10); if(!Number.isFinite(limit))limit=50; limit=Math.max(1,Math.min(limit,100));
-      const rows = GAMES[game]==="asc"
-        ? await sql`SELECT player_id,name,value,ts FROM scores WHERE game=${game} ORDER BY value ASC, ts ASC LIMIT ${limit}`
-        : await sql`SELECT player_id,name,value,ts FROM scores WHERE game=${game} ORDER BY value DESC, ts ASC LIMIT ${limit}`;
-      return json({rows:rows.map(r=>({playerId:r.player_id,name:r.name,value:Number(r.value),ts:Number(r.ts)}))});
-    }
-    if(req.method==="POST"){
-      const body=await req.json().catch(()=>null); if(!body) return json({error:"bad json"},400);
+      const rows = GAMES[game]==="asc" ? await sql`SELECT player_id,name,value,ts FROM scores WHERE game=${game} ORDER BY value ASC, ts ASC LIMIT ${limit}` : await sql`SELECT player_id,name,value,ts FROM scores WHERE game=${game} ORDER BY value DESC, ts ASC LIMIT ${limit}`;
+      return json({rows:rows.map(r=>({playerId:r.player_id,name:r.name,value:Number(r.value),ts:Number(r.ts)}))}); }
+    if(req.method==="POST"){ const body=await req.json().catch(()=>null); if(!body) return json({error:"bad json"},400);
       const game=body.game; if(!GAMES[game]) return json({error:"invalid game"},400);
       const playerId=String(body.playerId||"").slice(0,64); const name=sanitizeName(body.name); const value=Math.round(Number(body.value));
-      if(!playerId||!Number.isFinite(value)) return json({error:"invalid payload"},400);
-      const ts=Date.now();
-      if(GAMES[game]==="asc"){
-        await sql`INSERT INTO scores (game,player_id,name,value,ts) VALUES (${game},${playerId},${name},${value},${ts}) ON CONFLICT (game,player_id) DO UPDATE SET name=EXCLUDED.name, value=EXCLUDED.value, ts=EXCLUDED.ts WHERE EXCLUDED.value < scores.value`;
-      } else {
-        await sql`INSERT INTO scores (game,player_id,name,value,ts) VALUES (${game},${playerId},${name},${value},${ts}) ON CONFLICT (game,player_id) DO UPDATE SET name=EXCLUDED.name, value=EXCLUDED.value, ts=EXCLUDED.ts WHERE EXCLUDED.value > scores.value`;
-      }
-      return json({ok:true});
-    }
+      if(!playerId||!Number.isFinite(value)) return json({error:"invalid payload"},400); const ts=Date.now();
+      if(GAMES[game]==="asc"){ await sql`INSERT INTO scores (game,player_id,name,value,ts) VALUES (${game},${playerId},${name},${value},${ts}) ON CONFLICT (game,player_id) DO UPDATE SET name=EXCLUDED.name, value=EXCLUDED.value, ts=EXCLUDED.ts WHERE EXCLUDED.value < scores.value`; }
+      else { await sql`INSERT INTO scores (game,player_id,name,value,ts) VALUES (${game},${playerId},${name},${value},${ts}) ON CONFLICT (game,player_id) DO UPDATE SET name=EXCLUDED.name, value=EXCLUDED.value, ts=EXCLUDED.ts WHERE EXCLUDED.value > scores.value`; }
+      return json({ok:true}); }
     return json({error:"method not allowed"},405);
   }catch(e){ return json({error:String((e&&e.message)||e)},500); }
 };

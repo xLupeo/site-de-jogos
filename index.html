@@ -16,6 +16,11 @@
 <link rel="icon" type="image/png" sizes="48x48" href="/icon-48.png">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png">
+<link rel="mask-icon" href="/favicon.svg" color="#ffc24a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="application-name" content="ARCADE Setor 7">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,7 +49,7 @@
     --radius:6px;
   }
 
-  /* --- tema CLÁSSICO (padrão) — alto contraste, leitura fácil em todos os jogos --- */
+  /* --- tema CLÁSSICO (padrão) --- */
   html[data-theme="classico"]{
     --bg:#0e141b; --bg-2:#151f2b;
     --panel:#182430; --panel-2:#1f2e3d;
@@ -929,6 +934,7 @@
   .bk-overlay.show{ display:flex; animation:screenIn .3s ease; }
   .bk-overlay .msg{ font-family:'Black Ops One',sans-serif; font-size:28px; color:var(--accent-ink); text-shadow:0 2px 0 #000; }
   .bk-overlay .sub{ color:var(--text-dim); font-size:14px; }
+  /* ===== MODO CLARO / ESCURO ===== */
   html[data-mode="light"]{
     --bg:#eaeef3; --bg-2:#f5f8fb;
     --panel:#ffffff; --panel-2:#eef3f8;
@@ -957,6 +963,8 @@
   .btn.active{ box-shadow:0 0 0 1px rgba(var(--accent-rgb),.4), 0 4px 12px rgba(var(--accent-rgb),.25); }
   .score-box .val{ transition: transform .12s; }
   .score-box.bump .val{ transform: scale(1.14); }
+
+  /* ===== Breakout ===== */
   .breakout{ width:100%; max-width:460px; }
   .bk-wrap{ position:relative; width:100%; max-width:460px; border-radius:16px; overflow:hidden; box-shadow: 0 14px 34px rgba(0,0,0,.45); }
   #bkCanvas{ width:100%; height:auto; display:block; aspect-ratio:480/560; background:transparent;
@@ -966,7 +974,8 @@
   .bk-overlay.show{ display:flex; animation:screenIn .3s ease; }
   .bk-overlay .msg{ font-family:'Black Ops One',sans-serif; font-size:30px; color:var(--accent-ink); text-shadow:0 2px 0 #000, 0 0 22px rgba(var(--accent-rgb),.4); }
   .bk-overlay .sub{ color:#dfe6ee; font-size:15px; }
-  /* LIGA 4 — correção de alinhamento/overflow */
+
+  /* ===== LIGA 4 (correção de alinhamento) ===== */
   .liga4{ max-width:min(460px, 96vw); }
   .c4-wrap{ width:100%; max-width:min(400px, 92vw); position:relative;
     background:linear-gradient(180deg,#123a60,#0e2c49); border:2px solid var(--border); border-radius:12px;
@@ -980,6 +989,41 @@
   .c4-disc{ width:82%; height:82%; border-radius:50%; background:rgba(0,0,0,.35); box-shadow: inset 0 2px 5px rgba(0,0,0,.6); }
   .c4-disc.drop{ animation:c4drop .28s cubic-bezier(.34,1.2,.64,1); }
   @keyframes c4drop{ 0%{ transform:translateY(-160%); } 70%{ transform:translateY(6%); } 100%{ transform:translateY(0); } }
+
+  /* ===== NOVO: destaque de linha vencedora (Velha + Liga 4) ===== */
+  @keyframes wglow{ 0%,100%{ filter:brightness(1); } 50%{ filter:brightness(1.35); } }
+  .ttt-cell.win{ border-color:var(--win)!important; box-shadow: inset 0 0 0 3px var(--win), 0 0 18px rgba(var(--win-rgb),.65); animation:wglow 1s ease-in-out infinite; }
+  .c4-disc.win{ box-shadow:0 0 0 3px var(--win), 0 0 18px rgba(var(--win-rgb),.75); animation:wglow 1s ease-in-out infinite; }
+
+  /* ===== NOVO: 2048 tiles mais bonitas + botão Undo ===== */
+  .g2048-tile{ box-shadow: 0 3px 8px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.35), inset 0 -2px 4px rgba(0,0,0,.12); }
+  .t2-2{ background:linear-gradient(180deg,#f6efe6,#e9ddca); } .t2-4{ background:linear-gradient(180deg,#f3e6cf,#e6d3b3); }
+  .t2-8{ background:linear-gradient(180deg,#f7bd86,#ef9a56); } .t2-16{ background:linear-gradient(180deg,#f7a06f,#f07a3f); }
+  .t2-32{ background:linear-gradient(180deg,#f98a6c,#f25b39); } .t2-64{ background:linear-gradient(180deg,#f96f4a,#e33a1c); }
+  .t2-128{ background:linear-gradient(180deg,#efd784,#e5c14e); } .t2-256{ background:linear-gradient(180deg,#efd472,#e5bd3c); }
+  .t2-512{ background:linear-gradient(180deg,#efce5d,#e5b62c); } .t2-1024{ background:linear-gradient(180deg,#efc94b,#e3ad1e); }
+  .t2-2048{ background:linear-gradient(180deg,#ffd76a,#eeb81f); box-shadow:0 0 26px rgba(238,184,31,.75), inset 0 1px 0 rgba(255,255,255,.5); }
+  #g2Undo:disabled{ opacity:.45; cursor:default; }
+
+  /* ===== NOVO: Snake (cabeça com olho) e botão travessia já usam .btn.chip ===== */
+
+  /* ===== NOVO: Lights Out — célula sugerida pela Dica ===== */
+  .lo-cell.hint{ box-shadow: inset 0 0 0 3px var(--accent), 0 0 16px rgba(var(--accent-rgb),.7); animation:hintPulse 1.1s ease-in-out infinite; }
+  /* ---------- PWA: botão instalar + dica iOS ---------- */
+  .install-btn{ display:none; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:14px; line-height:1;
+    color:#181812; background:var(--accent); border:1px solid var(--accent); border-radius:5px;
+    padding:7px 12px; cursor:pointer; transition:transform .08s, filter .15s; }
+  .install-btn.show{ display:inline-flex; align-items:center; gap:6px; }
+  .install-btn:hover{ filter:brightness(1.06); }
+  .install-btn:active{ transform:translateY(1px); }
+  .ios-hint{ position:fixed; left:12px; right:12px; bottom:14px; z-index:60; margin:0 auto; max-width:520px;
+    background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:12px;
+    padding:12px 14px; box-shadow:0 12px 30px rgba(0,0,0,.5); display:none; align-items:center; gap:10px;
+    font-size:13.5px; line-height:1.4; }
+  .ios-hint.show{ display:flex; animation:screenIn .3s ease; }
+  .ios-hint b{ color:var(--accent-ink); }
+  .ios-hint .x{ margin-left:auto; background:none; border:none; color:var(--text-dim); font-size:20px; cursor:pointer; line-height:1; }
+  .ios-share{ display:inline-block; width:16px; height:16px; vertical-align:-2px; }
 </style>
 </head>
 <body>
@@ -1002,6 +1046,7 @@
     <button class="swatch" data-theme="noir" title="Noir" aria-label="Tema Noir"></button>
   <button class="sound-btn" id="soundBtn" title="Ligar/desligar som" aria-label="Som">🔊</button>
   <button class="mode-btn" id="modeBtn" title="Alternar claro/escuro" aria-label="Modo claro ou escuro">🌙</button>
+  <button class="install-btn" id="installBtn" title="Instalar o app" aria-label="Instalar o app">⬇️ Instalar</button>
   </div>
 </header>
 
@@ -1321,6 +1366,7 @@
     <div class="g2048-hud">
       <div class="score-box"><div class="lbl">Pontos</div><div class="val" id="g2Score">0</div></div>
       <div class="score-box"><div class="lbl">Recorde</div><div class="val" id="g2Best">0</div></div>
+      <button class="btn" id="g2Undo" disabled>↶ Desfazer</button>
       <button class="btn" id="g2New">↻ Novo jogo</button>
     </div>
 
@@ -1351,6 +1397,7 @@
       <div class="score-box"><div class="lbl">Pontos</div><div class="val" id="snScore">0</div></div>
       <div class="score-box"><div class="lbl">Recorde</div><div class="val" id="snBest">0</div></div>
       <button class="btn" id="snNew">↻ Novo jogo</button>
+      <button class="btn chip" id="snWrap">🔁 Travessia: OFF</button>
     </div>
     <div class="snake-wrap">
       <canvas id="snakeCanvas" width="425" height="425"></canvas>
@@ -1419,6 +1466,7 @@
     <div class="masthead"><p class="eyebrow">Setor 7 — Blecaute</p><h1>LIGHTS OUT</h1><p class="sub">apague todas as luzes</p></div>
     <div class="snake-hud">
       <div class="score-box"><div class="lbl">Jogadas</div><div class="val" id="loMoves">0</div></div>
+      <button class="btn chip" id="loHint">💡 Dica</button>
       <button class="btn" id="loNew">↻ Novo</button>
     </div>
     <div class="record-row" id="loBest">Sem recorde ainda</div>
@@ -3364,8 +3412,8 @@
   ===================================================================== */
   const Game2048 = (function(){
     const N=4, GAP=2.4, CELL=(100-GAP*(N+1))/N;
-    let gridEl, scoreEl, bestEl, overlay, msgEl, subEl;
-    let cells=[], score=0, best=0, won=false, over=false, inited=false;
+    let gridEl, scoreEl, bestEl, overlay, msgEl, subEl, undoBtn;
+    let cells=[], score=0, best=0, won=false, over=false, inited=false; let history2=[];
 
     function pos(i){ return GAP + i*(CELL+GAP); }
     function empties(){ const e=[]; for(let r=0;r<N;r++)for(let c=0;c<N;c++) if(!cells[r][c]) e.push([r,c]); return e; }
@@ -3407,6 +3455,7 @@
         gridEl.appendChild(t);
       }
       scoreEl.textContent=score; bestEl.textContent=best;
+      if(undoBtn) undoBtn.disabled = (history2.length===0);
     }
     function anyMoves(){ if(empties().length) return true; for(const d of ['left','right','up','down']) if(computeMove(cells,d).changed) return true; return false; }
     function checkEnd(){
@@ -3419,11 +3468,12 @@
       if(over) return false;
       const res=computeMove(cells, dir);
       if(res.changed){
+        history2=[{ cells:cells.map(r=>r.slice()), score }];
         cells=res.grid; score+=res.gained;
+        if(window.ArcadeHaptics) window.ArcadeHaptics.tap(5);
         if(score>best){ best=score; store2('g2048best', best); try{ if(window.ArcadeBus) window.ArcadeBus.emit('g2048:best', { best }); }catch(e){} }
         const np=spawn();
         render(np, res.merged);
-        if(window.ArcadeHaptics) window.ArcadeHaptics.tap(5);
       }
       checkEnd();
       return res.changed;
@@ -3432,7 +3482,8 @@
     function load2(k,fb){ try{ const v=localStorage.getItem(k); return v!=null?JSON.parse(v):fb; }catch(e){ return fb; } }
     function bumpGames(){ const g=load2('g2048games',0)+1; store2('g2048games',g); if(window.HUB&&window.HUB.refreshStats) window.HUB.refreshStats(); }
 
-    function newGame(){ cells=Array.from({length:N},()=>new Array(N).fill(0)); score=0; won=false; over=false; overlay.classList.remove('show'); spawn(); spawn(); render(); }
+    function undo(){ if(!history2.length) return; const h=history2.pop(); cells=h.cells.map(r=>r.slice()); score=h.score; over=false; overlay.classList.remove('show'); render(); if(window.ArcadeHaptics) window.ArcadeHaptics.tap(6); if(undoBtn) undoBtn.disabled=true; }
+    function newGame(){ cells=Array.from({length:N},()=>new Array(N).fill(0)); score=0; won=false; over=false; history2=[]; overlay.classList.remove('show'); spawn(); spawn(); render(); if(undoBtn) undoBtn.disabled=true; }
 
     function handleKeydown(e){
       if(!window.HUB || window.HUB.current!=='g2048') return;
@@ -3444,10 +3495,11 @@
     function onTouchEnd(e){ const t=e.changedTouches[0]; const dx=t.clientX-tsx, dy=t.clientY-tsy; if(Math.max(Math.abs(dx),Math.abs(dy))<24) return; if(Math.abs(dx)>Math.abs(dy)) move(dx>0?'right':'left'); else move(dy>0?'down':'up'); }
 
     function init(){
-      gridEl=document.getElementById('g2Grid'); scoreEl=document.getElementById('g2Score'); bestEl=document.getElementById('g2Best');
+      gridEl=document.getElementById('g2Grid'); scoreEl=document.getElementById('g2Score'); bestEl=document.getElementById('g2Best'); undoBtn=document.getElementById('g2Undo');
       overlay=document.getElementById('g2Overlay'); msgEl=document.getElementById('g2Msg'); subEl=document.getElementById('g2Sub');
       best=load2('g2048best',0);
       document.getElementById('g2New').addEventListener('click', newGame);
+      if(undoBtn) undoBtn.addEventListener('click', undo);
       document.getElementById('g2Retry').addEventListener('click', newGame);
       document.addEventListener('keydown', handleKeydown);
       gridEl.addEventListener('touchstart', onTouchStart, {passive:true});
@@ -3460,7 +3512,7 @@
       simulate(matrix, dir){ return computeMove(matrix, dir); },
       load(matrix){ cells=matrix.map(r=>r.slice()); won=false; over=false; if(overlay) overlay.classList.remove('show'); render(); },
       move(dir){ return move(dir); }, get grid(){ return cells.map(r=>r.slice()); }, get score(){ return score; },
-      isOver(){ return over; }, hasWon(){ return won; }, best(){ return best; }
+      isOver(){ return over; }, hasWon(){ return won; }, best(){ return best; }, undo(){ undo(); }
     }};
   })();
 
@@ -3473,7 +3525,7 @@
     const DY = { up:-1, down:1, left:0, right:0 };
     const OPP = { left:'right', right:'left', up:'down', down:'up' };
     let canvas, ctx, scoreEl, bestEl, overlay, msgEl, subEl;
-    let snake, dir, nextDir, food, score, best=0, over=true, inited=false, loop=null, speed=140;
+    let snake, dir, nextDir, food, score, best=0, over=true, inited=false, loop=null, speed=140, wrap=false;
     function store2(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
     function load2(k,fb){ try{ const v=localStorage.getItem(k); return v!=null?JSON.parse(v):fb; }catch(e){ return fb; } }
     function cssVar(n){ try{ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }catch(e){ return ''; } }
@@ -3484,9 +3536,11 @@
       return free.length ? free[Math.floor(Math.random()*free.length)] : null;
     }
     // Passo puro (testável): recebe estado e devolve resultado.
-    function computeStep(sn, d, fd){
-      const head=[sn[0][0]+DX[d], sn[0][1]+DY[d]];
-      if(head[0]<0||head[0]>=N||head[1]<0||head[1]>=N) return { dead:true };
+    function computeStep(sn, d, fd, w){
+      const useWrap=(w===undefined)?wrap:w;
+      let hx=sn[0][0]+DX[d], hy=sn[0][1]+DY[d];
+      if(useWrap){ hx=(hx+N)%N; hy=(hy+N)%N; } else if(hx<0||hx>=N||hy<0||hy>=N) return { dead:true };
+      const head=[hx,hy];
       const ate = !!fd && head[0]===fd[0] && head[1]===fd[1];
       const body = ate ? sn : sn.slice(0, sn.length-1);
       if(body.some(s=>s[0]===head[0]&&s[1]===head[1])) return { dead:true };
@@ -3509,12 +3563,12 @@
     function tick(){
       if(over) return;
       dir = nextDir;
-      const res = computeStep(snake, dir, food);
+      const res = computeStep(snake, dir, food, wrap);
       if(res.dead){ gameOver(); return; }
       snake = res.snake;
       if(res.ate){
         score++; if(scoreEl) scoreEl.textContent=score;
-        food = spawnFood(snake); if(window.ArcadeHaptics) window.ArcadeHaptics.tap(6);
+        food = spawnFood(snake);
         if(score>best){ best=score; store2('snakeBest',best); if(bestEl) bestEl.textContent=best; try{ if(window.ArcadeBus) window.ArcadeBus.emit('snake:best',{best}); }catch(e){} }
         speed = Math.max(70, 140 - score*3); scheduleLoop();
       }
@@ -3551,6 +3605,7 @@
       canvas=document.getElementById('snakeCanvas');
       ctx = (canvas && canvas.getContext) ? canvas.getContext('2d') : null;
       scoreEl=document.getElementById('snScore'); bestEl=document.getElementById('snBest');
+      wrap=load2('snakeWrap',false); const wb=document.getElementById('snWrap'); if(wb){ wb.classList.toggle('active',wrap); wb.textContent=wrap?'🔁 Travessia: ON':'🔁 Travessia: OFF'; wb.addEventListener('click',()=>{ wrap=!wrap; store2('snakeWrap',wrap); wb.classList.toggle('active',wrap); wb.textContent=wrap?'🔁 Travessia: ON':'🔁 Travessia: OFF'; if(window.ArcadeSfx) window.ArcadeSfx.play('blip'); }); }
       overlay=document.getElementById('snOverlay'); msgEl=document.getElementById('snMsg'); subEl=document.getElementById('snSub');
       best=load2('snakeBest',0); if(bestEl) bestEl.textContent=best;
       const nb=document.getElementById('snNew'); if(nb) nb.addEventListener('click', reset);
@@ -3566,8 +3621,8 @@
     return { init, onShow, onHide, isInited(){ return inited; }, _test:{
       simulate:computeStep, N,
       load(sn,d,fd){ snake=sn.map(s=>s.slice()); dir=d; nextDir=d; food=fd?fd.slice():null; over=false; score=0; },
-      tick(){ tick(); }, setDir(d){ nextDir=d; },
-      get state(){ return { snake:snake.map(s=>s.slice()), dir, food:food?food.slice():null, score, over }; },
+      tick(){ tick(); }, setDir(d){ nextDir=d; }, setWrap(w){ wrap=!!w; },
+      get state(){ return { snake:snake.map(s=>s.slice()), dir, food:food?food.slice():null, score, over, wrap }; },
       isOver(){ return over; }, best(){ return best; }
     }};
   })();
@@ -3690,11 +3745,12 @@
   ===================================================================== */
   const Velha = (function(){
     let boardEl, statusEl, streakEl, diffRow, newBtn;
-    let cells, turn, over, diff='hard', busy=false, inited=false;
+    let cells, turn, over, diff='hard', busy=false, inited=false; let winSet=null;
     const HUMAN='X', AI='O', LINES=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
     function st(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
     function ld(k,fb){ try{ const v=localStorage.getItem(k); return v!=null?JSON.parse(v):fb; }catch(e){ return fb; } }
     function winner(b){ for(const [a,c,d] of LINES){ if(b[a]&&b[a]===b[c]&&b[a]===b[d]) return b[a]; } return b.every(x=>x)?'draw':null; }
+    function winLine(b){ for(const L of LINES){ const [a,c,d]=L; if(b[a]&&b[a]===b[c]&&b[a]===b[d]) return L; } return null; }
     function minimax(b, player){ const w=winner(b);
       if(w===AI) return {score:10}; if(w===HUMAN) return {score:-10}; if(w==='draw') return {score:0};
       let best = player===AI ? {score:-Infinity} : {score:Infinity};
@@ -3705,12 +3761,12 @@
       if(level==='easy') return e[Math.floor(Math.random()*e.length)];
       if(level==='medium' && Math.random()<0.5) return e[Math.floor(Math.random()*e.length)];
       return minimax(b.slice(), AI).move; }
-    function render(){ if(!boardEl) return; boardEl.innerHTML = cells.map((v,i)=>('<button class="ttt-cell'+(v?' filled':'')+(v==='X'?' x':(v==='O'?' o':''))+'" data-i="'+i+'" '+(v||over?'disabled':'')+'>'+(v||'')+'</button>')).join(''); }
+    function render(){ if(!boardEl) return; boardEl.innerHTML = cells.map((v,i)=>{ const w=(winSet&&winSet.indexOf(i)>=0)?' win':''; return '<button class="ttt-cell'+(v?' filled':'')+(v==='X'?' x':(v==='O'?' o':''))+w+'" data-i="'+i+'" '+(v||over?'disabled':'')+'>'+(v||'')+'</button>'; }).join(''); }
     function setStatus(t,c){ if(statusEl){ statusEl.textContent=t; statusEl.className='banner termo-banner'+(c?(' '+c):''); } }
     function sk(){ return 'velhaStreak_'+diff; }
     function diffName(){ return diff==='hard'?'Difícil':(diff==='medium'?'Médio':'Fácil'); }
     function renderStreak(){ if(streakEl){ const s=ld(sk(),0)||0; const mx=ld('velhaStreakMax_'+diff,0)||0; streakEl.textContent='Sem derrota ('+diffName()+'): '+s+(mx?('  ·  Recorde: '+mx):''); } }
-    function finish(res){ over=true; render(); let s=ld(sk(),0)||0; if(res==='lose') s=0; else s++; st(sk(),s);
+    function finish(res){ over=true; winSet=(res==='win'||res==='lose')?winLine(cells):null; render(); let s=ld(sk(),0)||0; if(res==='lose') s=0; else s++; st(sk(),s);
       const mk='velhaStreakMax_'+diff; if(s>(ld(mk,0)||0)) st(mk,s); st('velhaGames',(ld('velhaGames',0)||0)+1);
       if(res==='win'){ setStatus('🎉 Você venceu a IA!','win'); Sfx.play('win'); }
       else if(res==='lose'){ setStatus('💥 A IA venceu. Sequência zerada.','lose'); Sfx.play('lose'); }
@@ -3722,7 +3778,7 @@
     function play(i){ if(over||busy||cells[i]||turn!==HUMAN) return; cells[i]=HUMAN; Sfx.play('move'); if(window.ArcadeHaptics) window.ArcadeHaptics.tap(8); turn=AI; render();
       if(afterMove()) return; busy=true; setStatus('IA pensando…');
       setTimeout(()=>{ const m=aiMove(cells,diff); if(m>=0){ cells[m]=AI; Sfx.play('move'); } turn=HUMAN; busy=false; render(); if(!afterMove()) setStatus('Sua vez (você é X).'); }, 240); }
-    function reset(){ cells=['','','','','','','','','']; turn=HUMAN; over=false; busy=false; render(); setStatus('Sua vez (você é X).'); renderStreak(); }
+    function reset(){ cells=['','','','','','','','','']; turn=HUMAN; over=false; busy=false; winSet=null; render(); setStatus('Sua vez (você é X).'); renderStreak(); }
     function setDiff(d){ diff=d; st('velhaDiff',d); [...diffRow.children].forEach(b=>b.classList.toggle('active', b.dataset.vdiff===d)); reset(); }
     function init(){ boardEl=document.getElementById('vBoard'); statusEl=document.getElementById('vStatus'); streakEl=document.getElementById('vStreak'); diffRow=document.getElementById('vDiffRow'); newBtn=document.getElementById('vNew');
       diff=ld('velhaDiff','hard'); if(diffRow) [...diffRow.children].forEach(b=>b.classList.toggle('active', b.dataset.vdiff===diff));
@@ -3730,7 +3786,7 @@
       if(diffRow) diffRow.addEventListener('click', e=>{ const b=e.target.closest('button[data-vdiff]'); if(b) setDiff(b.dataset.vdiff); });
       if(newBtn) newBtn.addEventListener('click', reset); inited=true; reset(); }
     function onShow(){ if(!inited) init(); else renderStreak(); }
-    return { init, onShow, isInited(){ return inited; }, _test:{ winner, minimax, aiMove, play, reset, setDiff,
+    return { init, onShow, isInited(){ return inited; }, _test:{ winner, winLine, minimax, aiMove, play, reset, setDiff,
       get state(){ return { cells:cells.slice(), turn, over, diff }; }, rig(a,t){ cells=a.slice(); turn=t||HUMAN; over=false; busy=false; render(); } }};
   })();
 
@@ -3740,7 +3796,7 @@
   ===================================================================== */
   const Lights = (function(){
     const N=5;
-    let gridEl, movesEl, bannerEl, newBtn, bestEl;
+    let gridEl, movesEl, bannerEl, newBtn, bestEl, hintBtn;
     let board=[], moves=0, over=false, inited=false;
     function st(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
     function ld(k,fb){ try{ const v=localStorage.getItem(k); return v!=null?JSON.parse(v):fb; }catch(e){ return fb; } }
@@ -3760,13 +3816,22 @@
       setBanner('🎉 Apagou tudo em '+moves+' jogadas'+(isBest?' — novo recorde!':'')+'!','win'); Sfx.play('win'); renderBest();
       try{ if(window.ArcadeBus) window.ArcadeBus.emit('lights:finish',{moves}); }catch(e){}
       if(window.HUB&&window.HUB.refreshStats) window.HUB.refreshStats(); }
+    function buildA(){ const A=[]; for(let i=0;i<N*N;i++) A.push(new Array(N*N).fill(0));
+      for(let r=0;r<N;r++)for(let c=0;c<N;c++){ const j=r*N+c; [[0,0],[1,0],[-1,0],[0,1],[0,-1]].forEach(([dr,dc])=>{ const nr=r+dr,nc=c+dc; if(nr>=0&&nr<N&&nc>=0&&nc<N) A[nr*N+nc][j]=1; }); } return A; }
+    function solveLights(bd){ const n=N*N; const A=buildA(); const M=A.map((row,i)=>row.concat(bd[i]&1)); const where=new Array(n).fill(-1); let rank=0;
+      for(let col=0; col<n && rank<n; col++){ let sel=-1; for(let i=rank;i<n;i++){ if(M[i][col]){ sel=i; break; } } if(sel<0) continue; const t=M[sel]; M[sel]=M[rank]; M[rank]=t;
+        for(let i=0;i<n;i++){ if(i!==rank && M[i][col]){ for(let k=col;k<=n;k++) M[i][k]^=M[rank][k]; } } where[col]=rank; rank++; }
+      for(let i=rank;i<n;i++){ if(M[i][n]) return null; } const x=new Array(n).fill(0); for(let col=0;col<n;col++){ if(where[col]>=0) x[col]=M[where[col]][n]; } return x; }
+    function applyPresses(x){ let b=new Array(N*N).fill(0); for(let i=0;i<N*N;i++){ if(x[i]) b=toggleAt(b, Math.floor(i/N), i%N); } return b; }
+    function hint(){ if(over) return; const x=solveLights(board); if(!x){ setBanner('Sem dica disponível.','lose'); return; } let idx=-1; for(let i=0;i<N*N;i++){ if(x[i]){ idx=i; break; } } if(idx<0){ setBanner('Já está quase lá!','info'); return; } const el=gridEl&&gridEl.querySelector('.lo-cell[data-i="'+idx+'"]'); if(el){ el.classList.add('hint'); setTimeout(()=>{ if(el) el.classList.remove('hint'); }, 1600); } setBanner('Dica: toque na célula destacada.','info'); if(window.ArcadeSfx) window.ArcadeSfx.play('ready'); if(window.ArcadeHaptics) window.ArcadeHaptics.tap(6); }
     function reset(){ board=scramble(); moves=0; over=false; if(movesEl) movesEl.textContent='0'; render(); setBanner('Apague todas as luzes! Clique alterna a peça e seus vizinhos.'); renderBest(); }
     function init(){ gridEl=document.getElementById('loGrid'); movesEl=document.getElementById('loMoves'); bannerEl=document.getElementById('loBanner'); newBtn=document.getElementById('loNew'); bestEl=document.getElementById('loBest');
       if(gridEl) gridEl.addEventListener('click', e=>{ const b=e.target.closest('.lo-cell'); if(b) press(parseInt(b.dataset.i,10)); });
+      hintBtn=document.getElementById('loHint'); if(hintBtn) hintBtn.addEventListener('click', hint);
       if(newBtn) newBtn.addEventListener('click', reset); inited=true; reset(); }
     function onShow(){ if(!inited) init(); }
     return { init, onShow, isInited(){ return inited; }, _test:{ toggleAt, solved, scramble, N,
-      rig(b){ board=b.slice(); moves=0; over=false; render(); }, press, get state(){ return { board:board.slice(), moves, over }; } }};
+      rig(b){ board=b.slice(); moves=0; over=false; render(); }, press, solveLights, applyPresses, get state(){ return { board:board.slice(), moves, over }; } }};
   })();
 
   /* =====================================================================
@@ -3776,8 +3841,7 @@
   const Liga4 = (function(){
     const COLS=7, ROWS=6, HUMAN='R', AI='Y';
     let boardEl, statusEl, streakEl, diffRow, newBtn;
-    let grid, turn, over, diff='hard', busy=false, inited=false;
-    let lastDrop={r:-1,c:-1};
+    let grid, turn, over, diff='hard', busy=false, inited=false; let lastDrop={r:-1,c:-1}; let winCells=null;
     function st(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
     function ld(k,fb){ try{ const v=localStorage.getItem(k); return v!=null?JSON.parse(v):fb; }catch(e){ return fb; } }
     function make(){ return Array.from({length:ROWS},()=>new Array(COLS).fill('')); }
@@ -3788,6 +3852,7 @@
       for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){ const p=g[r][c]; if(!p) continue;
         for(const [dr,dc] of [[0,1],[1,0],[1,1],[1,-1]]){ let k=1; while(k<4){ const nr=r+dr*k, nc=c+dc*k; if(nr<0||nr>=ROWS||nc<0||nc>=COLS||g[nr][nc]!==p) break; k++; } if(k===4) return p; } }
       return g[0].every(x=>x)?'draw':null; }
+    function winLineCells(g){ for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){ const p=g[r][c]; if(!p) continue; for(const [dr,dc] of [[0,1],[1,0],[1,1],[1,-1]]){ const cc=[[r,c]]; let ok=true; for(let k=1;k<4;k++){ const nr=r+dr*k,nc=c+dc*k; if(nr<0||nr>=ROWS||nc<0||nc>=COLS||g[nr][nc]!==p){ ok=false; break; } cc.push([nr,nc]); } if(ok) return cc; } } return null; }
     function scorePos(g,p){ // heurística simples: janelas de 4
       const opp = p===AI?HUMAN:AI; let s=0;
       function winScore(win){ let cp=win.filter(x=>x===p).length, co=win.filter(x=>x===opp).length, ce=win.filter(x=>!x).length;
@@ -3816,13 +3881,13 @@
       return negamax(g, 5, -Infinity, Infinity, AI).move; }
     function render(){ if(!boardEl) return; let html='';
       html+='<div class="c4-cols">'; for(let c=0;c<COLS;c++) html+='<button class="c4-colbtn" data-col="'+c+'" '+((over||grid[0][c])?'disabled':'')+' aria-label="coluna '+(c+1)+'">▾</button>'; html+='</div>';
-      html+='<div class="c4-grid">'; for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){ const v=grid[r][c]; const dp=(r===lastDrop.r&&c===lastDrop.c)?' drop':''; html+='<div class="c4-cell"><span class="c4-disc'+(v==='R'?' r':(v==='Y'?' y':''))+dp+'"></span></div>'; } html+='</div>';
+      html+='<div class="c4-grid">'; for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){ const v=grid[r][c]; const dp=(r===lastDrop.r&&c===lastDrop.c)?' drop':''; const wc=(winCells&&winCells.some(p=>p[0]===r&&p[1]===c))?' win':''; html+='<div class="c4-cell"><span class="c4-disc'+(v==='R'?' r':(v==='Y'?' y':''))+dp+wc+'"></span></div>'; } html+='</div>';
       boardEl.innerHTML=html; }
     function setStatus(t,c){ if(statusEl){ statusEl.textContent=t; statusEl.className='banner termo-banner'+(c?(' '+c):''); } }
     function sk(){ return 'liga4Streak_'+diff; }
     function diffName(){ return diff==='hard'?'Difícil':(diff==='medium'?'Médio':'Fácil'); }
     function renderStreak(){ if(streakEl){ const s=ld(sk(),0)||0; const mx=ld('liga4StreakMax_'+diff,0)||0; streakEl.textContent='Sem derrota ('+diffName()+'): '+s+(mx?('  ·  Recorde: '+mx):''); } }
-    function finish(res){ over=true; render(); let s=ld(sk(),0)||0; if(res==='lose') s=0; else s++; st(sk(),s);
+    function finish(res){ over=true; winCells=(res==='win'||res==='lose')?winLineCells(grid):null; render(); let s=ld(sk(),0)||0; if(res==='lose') s=0; else s++; st(sk(),s);
       const mk='liga4StreakMax_'+diff; if(s>(ld(mk,0)||0)) st(mk,s); st('liga4Games',(ld('liga4Games',0)||0)+1);
       if(res==='win'){ setStatus('🎉 Você venceu!','win'); Sfx.play('win'); } else if(res==='lose'){ setStatus('💥 A IA venceu. Sequência zerada.','lose'); Sfx.play('lose'); } else { setStatus('🤝 Empate! (sequência +1)','info'); Sfx.play('draw'); }
       renderStreak(); try{ if(window.ArcadeBus) window.ArcadeBus.emit('liga4:finish',{result:res,diff,streak:ld(sk(),0)||0}); }catch(e){}
@@ -3831,7 +3896,7 @@
     function playCol(col){ if(over||busy||turn!==HUMAN||grid[0][col]) return; const hr=drop(grid,col,HUMAN); lastDrop={r:hr,c:col}; Sfx.play('drop'); if(window.ArcadeHaptics) window.ArcadeHaptics.tap(9); turn=AI; render();
       if(checkEnd()) return; busy=true; setStatus('IA pensando…');
       setTimeout(()=>{ const c=aiMove(grid,diff); if(c>=0){ const ar=drop(grid,c,AI); lastDrop={r:ar,c:c}; Sfx.play('drop'); } turn=HUMAN; busy=false; render(); if(!checkEnd()) setStatus('Sua vez (peças vermelhas).'); }, 240); }
-    function reset(){ grid=make(); turn=HUMAN; over=false; busy=false; lastDrop={r:-1,c:-1}; render(); setStatus('Sua vez (peças vermelhas).'); renderStreak(); }
+    function reset(){ grid=make(); turn=HUMAN; over=false; busy=false; lastDrop={r:-1,c:-1}; winCells=null; render(); setStatus('Sua vez (peças vermelhas).'); renderStreak(); }
     function setDiff(d){ diff=d; st('liga4Diff',d); [...diffRow.children].forEach(b=>b.classList.toggle('active', b.dataset.l4diff===d)); reset(); }
     function init(){ boardEl=document.getElementById('c4Board'); statusEl=document.getElementById('c4Status'); streakEl=document.getElementById('c4Streak'); diffRow=document.getElementById('c4DiffRow'); newBtn=document.getElementById('c4New');
       diff=ld('liga4Diff','hard'); if(diffRow) [...diffRow.children].forEach(b=>b.classList.toggle('active', b.dataset.l4diff===diff));
@@ -4328,5 +4393,77 @@
 })();
 </script>
 
+<div class="ios-hint" id="iosHint" role="dialog" aria-live="polite">
+  <span>Para instalar: toque em <b>Compartilhar</b> <svg class="ios-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/></svg> e depois <b>Adicionar à Tela de Início</b>.</span>
+  <button class="x" id="iosHintClose" aria-label="Fechar">×</button>
+</div>
+<script>
+/* =====================================================================
+   PWA — registra o Service Worker, oferece "Instalar" (desktop/Android)
+   e mostra dica de instalação no iOS. Também trata atualização do SW.
+===================================================================== */
+(function(){
+  "use strict";
+  var installEvt=null, installBtn=document.getElementById('installBtn');
+  var iosHint=document.getElementById('iosHint'), iosClose=document.getElementById('iosHintClose');
+
+  function isStandalone(){
+    return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)
+        || window.navigator.standalone === true;
+  }
+  function isIOS(){
+    var ua=navigator.userAgent||'';
+    var iOSDevice=/iPad|iPhone|iPod/.test(ua) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+    var isSafari=/^((?!chrome|android|crios|fxios|edgios).)*safari/i.test(ua);
+    return iOSDevice && isSafari;
+  }
+
+  // ---- Registro do Service Worker ----
+  if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('/sw.js').then(function(reg){
+        // Detecta um SW novo esperando e o ativa.
+        function promote(w){ if(!w) return; w.addEventListener('statechange', function(){ if(w.state==='installed' && navigator.serviceWorker.controller){ w.postMessage({type:'skip-waiting'}); } }); }
+        if(reg.waiting) reg.waiting.postMessage({type:'skip-waiting'});
+        reg.addEventListener('updatefound', function(){ promote(reg.installing); });
+      }).catch(function(){});
+      var refreshing=false;
+      navigator.serviceWorker.addEventListener('controllerchange', function(){ if(refreshing) return; refreshing=true; location.reload(); });
+    });
+  }
+
+  // ---- Instalar (Chrome/Edge/Android) ----
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault(); installEvt=e;
+    if(installBtn && !isStandalone()) installBtn.classList.add('show');
+  });
+  if(installBtn){
+    installBtn.addEventListener('click', function(){
+      if(!installEvt) return;
+      installEvt.prompt();
+      installEvt.userChoice.finally(function(){ installEvt=null; installBtn.classList.remove('show'); });
+    });
+  }
+  window.addEventListener('appinstalled', function(){
+    if(installBtn) installBtn.classList.remove('show');
+    try{ localStorage.setItem('arcadeInstalled','1'); }catch(e){}
+  });
+
+  // ---- Dica iOS (Safari, ainda não instalado) ----
+  function maybeIOSHint(){
+    if(!iosHint) return;
+    var dismissed=false; try{ dismissed=localStorage.getItem('iosHintDismissed')==='1'; }catch(e){}
+    if(isIOS() && !isStandalone() && !dismissed){
+      setTimeout(function(){ iosHint.classList.add('show'); }, 1800);
+    }
+  }
+  if(iosClose){ iosClose.addEventListener('click', function(){ iosHint.classList.remove('show'); try{ localStorage.setItem('iosHintDismissed','1'); }catch(e){} }); }
+  maybeIOSHint();
+
+  // Esconde o botão se já estiver instalado/rodando como app.
+  if(isStandalone() && installBtn) installBtn.classList.remove('show');
+  window.ArcadePWA={ isStandalone:isStandalone, canInstall:function(){ return !!installEvt; } };
+})();
+</script>
 </body>
 </html>

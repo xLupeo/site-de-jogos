@@ -1,0 +1,39 @@
+ARCADE Setor 7 — pacote PWA (instalável no desktop e no celular)
+================================================================
+
+Conteúdo (publique TUDO na raiz do site):
+  index.html                     → o jogo (9 jogos)
+  sw.js                          → Service Worker (offline + atualização)
+  site.webmanifest               → manifesto do PWA (ícones, atalhos)
+  favicon.ico / favicon.svg      → ícone da aba
+  apple-touch-icon.png           → ícone iOS
+  icon-192.png / icon-512.png    → ícones (padrão)
+  icon-192-maskable.png / icon-512-maskable.png → ícones "maskable" (Android)
+  icon-48.png                    → ícone pequeno
+  netlify.toml                   → config (Node 20 + headers do SW)
+  package.json                   → dependência do placar
+  netlify/functions/leaderboard.mjs → API do placar (Neon)
+
+--------------------------------------------------------------
+COMO INSTALAR O APP
+--------------------------------------------------------------
+• Android/Chrome/Edge: aparecerá o botão "⬇️ Instalar" na barra do topo
+  (ou use o menu ⋮ → "Instalar app").
+• Desktop (Chrome/Edge): botão "⬇️ Instalar" no topo ou o ícone de instalar
+  na barra de endereço.
+• iPhone/iPad (Safari): toque em Compartilhar → "Adicionar à Tela de Início".
+  (O app mostra uma dica automática quando detecta o Safari.)
+
+Requisito: o site precisa estar em HTTPS (o Netlify já fornece).
+Offline: depois da 1ª visita, o app abre mesmo sem internet
+(o placar online precisa de rede; sem rede ele usa o modo local).
+
+--------------------------------------------------------------
+DEPLOY
+--------------------------------------------------------------
+A) Rápido (placar local): app.netlify.com/drop → arraste a PASTA inteira.
+B) Placar GLOBAL: suba no GitHub → importe no Netlify → em
+   Environment variables adicione DATABASE_URL (connection string do neon.com)
+   → redeploy. O selo do placar vira "Online".
+
+IMPORTANTE: mantenha os ícones e o sw.js na RAIZ, junto do index.html.
