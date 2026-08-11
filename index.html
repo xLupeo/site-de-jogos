@@ -1016,14 +1016,31 @@
   .install-btn.show{ display:inline-flex; align-items:center; gap:6px; }
   .install-btn:hover{ filter:brightness(1.06); }
   .install-btn:active{ transform:translateY(1px); }
-  .ios-hint{ position:fixed; left:12px; right:12px; bottom:14px; z-index:60; margin:0 auto; max-width:520px;
-    background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:12px;
-    padding:12px 14px; box-shadow:0 12px 30px rgba(0,0,0,.5); display:none; align-items:center; gap:10px;
-    font-size:13.5px; line-height:1.4; }
-  .ios-hint.show{ display:flex; animation:screenIn .3s ease; }
-  .ios-hint b{ color:var(--accent-ink); }
-  .ios-hint .x{ margin-left:auto; background:none; border:none; color:var(--text-dim); font-size:20px; cursor:pointer; line-height:1; }
-  .ios-share{ display:inline-block; width:16px; height:16px; vertical-align:-2px; }
+  /* ---------- Modal de instalação (guia iOS / fallback) ---------- */
+  .pwa-modal{ position:fixed; inset:0; z-index:80; display:none; align-items:center; justify-content:center;
+    background:rgba(6,10,16,.72); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); padding:18px; }
+  .pwa-modal.show{ display:flex; animation:screenIn .25s ease; }
+  .pwa-card{ width:100%; max-width:400px; background:var(--panel); color:var(--text);
+    border:1px solid var(--border); border-radius:18px; padding:20px 20px 18px;
+    box-shadow:0 24px 60px rgba(0,0,0,.6); position:relative; }
+  .pwa-card .close{ position:absolute; top:10px; right:12px; background:none; border:none; color:var(--text-dim);
+    font-size:24px; line-height:1; cursor:pointer; padding:4px; }
+  .pwa-head{ display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+  .pwa-head img{ width:52px; height:52px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,.4); }
+  .pwa-head h3{ margin:0; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:19px; letter-spacing:.02em; }
+  .pwa-head p{ margin:2px 0 0; font-size:12.5px; color:var(--text-dim); }
+  .pwa-steps{ list-style:none; margin:14px 0 4px; padding:0; display:flex; flex-direction:column; gap:12px; }
+  .pwa-steps li{ display:flex; align-items:center; gap:12px; font-size:14px; line-height:1.35; }
+  .pwa-steps .n{ flex:0 0 auto; width:26px; height:26px; border-radius:50%; display:grid; place-items:center;
+    font-family:'Space Mono',monospace; font-weight:700; font-size:13px; color:#181812; background:var(--accent); }
+  .pwa-steps b{ color:var(--accent-ink); }
+  .ios-share{ display:inline-flex; width:20px; height:20px; vertical-align:-4px; color:var(--info);
+    border:1.5px solid var(--info); border-radius:5px; padding:1px; }
+  .pwa-note{ margin-top:12px; font-size:12px; color:var(--text-dim); line-height:1.5; }
+  .pwa-ok{ margin-top:14px; width:100%; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:15px;
+    text-transform:uppercase; letter-spacing:.05em; color:#181812; background:var(--accent);
+    border:none; border-radius:8px; padding:11px; cursor:pointer; }
+  .pwa-ok:active{ transform:translateY(1px); }
 </style>
 </head>
 <body>
@@ -4393,9 +4410,26 @@
 })();
 </script>
 
-<div class="ios-hint" id="iosHint" role="dialog" aria-live="polite">
-  <span>Para instalar: toque em <b>Compartilhar</b> <svg class="ios-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/></svg> e depois <b>Adicionar à Tela de Início</b>.</span>
-  <button class="x" id="iosHintClose" aria-label="Fechar">×</button>
+<div class="pwa-modal" id="pwaModal" role="dialog" aria-modal="true" aria-labelledby="pwaTitle">
+  <div class="pwa-card">
+    <button class="close" id="pwaClose" aria-label="Fechar">×</button>
+    <div class="pwa-head">
+      <img src="/icon-192.png" alt="Ícone do ARCADE Setor 7" width="52" height="52">
+      <div>
+        <h3 id="pwaTitle">Instalar o ARCADE</h3>
+        <p id="pwaSub">Adicione à tela de início e jogue como um app.</p>
+      </div>
+    </div>
+    <ol class="pwa-steps" id="pwaSteps">
+      <li><span class="n">1</span><span>Toque no botão <b>Compartilhar</b>
+        <svg class="ios-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/></svg>
+        na barra do Safari.</span></li>
+      <li><span class="n">2</span><span>Role e toque em <b>Adicionar à Tela de Início</b>.</span></li>
+      <li><span class="n">3</span><span>Confirme em <b>Adicionar</b> — pronto! 🎮</span></li>
+    </ol>
+    <p class="pwa-note" id="pwaNote">No iPhone/iPad, a instalação é feita pelo menu Compartilhar do Safari.</p>
+    <button class="pwa-ok" id="pwaOk">Entendi</button>
+  </div>
 </div>
 <script>
 /* =====================================================================
@@ -4404,25 +4438,64 @@
 ===================================================================== */
 (function(){
   "use strict";
-  var installEvt=null, installBtn=document.getElementById('installBtn');
-  var iosHint=document.getElementById('iosHint'), iosClose=document.getElementById('iosHintClose');
+  var installEvt=null;
+  var installBtn=document.getElementById('installBtn');
+  var modal=document.getElementById('pwaModal');
+  var mClose=document.getElementById('pwaClose');
+  var mOk=document.getElementById('pwaOk');
+  var mTitle=document.getElementById('pwaTitle');
+  var mSub=document.getElementById('pwaSub');
+  var mSteps=document.getElementById('pwaSteps');
+  var mNote=document.getElementById('pwaNote');
 
   function isStandalone(){
     return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)
-        || window.navigator.standalone === true;
+        || window.navigator.standalone === true
+        || (function(){ try{ return localStorage.getItem('arcadeInstalled')==='1'; }catch(e){ return false; } })();
   }
   function isIOS(){
     var ua=navigator.userAgent||'';
-    var iOSDevice=/iPad|iPhone|iPod/.test(ua) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
-    var isSafari=/^((?!chrome|android|crios|fxios|edgios).)*safari/i.test(ua);
-    return iOSDevice && isSafari;
+    return /iPad|iPhone|iPod/.test(ua) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
   }
+  function isAndroid(){ return /Android/i.test(navigator.userAgent||''); }
+
+  function showBtn(){ if(installBtn && !isStandalone()) installBtn.classList.add('show'); }
+  function hideBtn(){ if(installBtn) installBtn.classList.remove('show'); }
+
+  // ---- Modal (guia de instalação) ----
+  function openModal(){ if(!modal) return; buildSteps(); modal.classList.add('show'); }
+  function closeModal(){ if(modal) modal.classList.remove('show'); }
+  function buildSteps(){
+    if(!mSteps) return;
+    if(isIOS()){
+      if(mTitle) mTitle.textContent='Instalar no iPhone/iPad';
+      if(mSub) mSub.textContent='Adicione à Tela de Início e jogue como um app.';
+      mSteps.innerHTML =
+        '<li><span class="n">1</span><span>Toque no botão <b>Compartilhar</b> '+
+        '<svg class="ios-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/></svg>'+
+        ' na barra do Safari.</span></li>'+
+        '<li><span class="n">2</span><span>Role e toque em <b>Adicionar à Tela de Início</b>.</span></li>'+
+        '<li><span class="n">3</span><span>Confirme em <b>Adicionar</b> — pronto! 🎮</span></li>';
+      if(mNote) mNote.textContent='Dica: use o Safari (o Chrome no iPhone não instala apps).';
+    } else {
+      if(mTitle) mTitle.textContent='Instalar o ARCADE';
+      if(mSub) mSub.textContent='Adicione o app ao seu dispositivo.';
+      mSteps.innerHTML =
+        '<li><span class="n">1</span><span>Abra o menu <b>⋮</b> (ou o ícone de <b>instalar</b> na barra de endereço).</span></li>'+
+        '<li><span class="n">2</span><span>Escolha <b>Instalar app</b> / <b>Adicionar à tela inicial</b>.</span></li>'+
+        '<li><span class="n">3</span><span>Confirme — pronto! 🎮</span></li>';
+      if(mNote) mNote.textContent='Se o navegador oferecer instalação automática, o botão fará isso direto.';
+    }
+  }
+  if(mClose) mClose.addEventListener('click', closeModal);
+  if(mOk) mOk.addEventListener('click', closeModal);
+  if(modal) modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
 
   // ---- Registro do Service Worker ----
   if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
     window.addEventListener('load', function(){
       navigator.serviceWorker.register('/sw.js').then(function(reg){
-        // Detecta um SW novo esperando e o ativa.
         function promote(w){ if(!w) return; w.addEventListener('statechange', function(){ if(w.state==='installed' && navigator.serviceWorker.controller){ w.postMessage({type:'skip-waiting'}); } }); }
         if(reg.waiting) reg.waiting.postMessage({type:'skip-waiting'});
         reg.addEventListener('updatefound', function(){ promote(reg.installing); });
@@ -4432,37 +4505,43 @@
     });
   }
 
-  // ---- Instalar (Chrome/Edge/Android) ----
+  // ---- Instalação nativa (Chrome/Edge/Android) ----
   window.addEventListener('beforeinstallprompt', function(e){
-    e.preventDefault(); installEvt=e;
-    if(installBtn && !isStandalone()) installBtn.classList.add('show');
+    e.preventDefault(); installEvt=e; showBtn();
   });
+
+  // ---- Clique no botão: usa o prompt nativo se houver; senão abre o guia ----
   if(installBtn){
     installBtn.addEventListener('click', function(){
-      if(!installEvt) return;
-      installEvt.prompt();
-      installEvt.userChoice.finally(function(){ installEvt=null; installBtn.classList.remove('show'); });
+      if(installEvt){
+        installEvt.prompt();
+        installEvt.userChoice.finally(function(){ installEvt=null; hideBtn(); });
+      } else {
+        openModal();  // iOS e navegadores sem prompt nativo
+      }
     });
   }
+
+  // ---- Instalado: some com o botão e lembra da preferência ----
   window.addEventListener('appinstalled', function(){
-    if(installBtn) installBtn.classList.remove('show');
+    hideBtn(); closeModal();
     try{ localStorage.setItem('arcadeInstalled','1'); }catch(e){}
   });
 
-  // ---- Dica iOS (Safari, ainda não instalado) ----
-  function maybeIOSHint(){
-    if(!iosHint) return;
-    var dismissed=false; try{ dismissed=localStorage.getItem('iosHintDismissed')==='1'; }catch(e){}
-    if(isIOS() && !isStandalone() && !dismissed){
-      setTimeout(function(){ iosHint.classList.add('show'); }, 1800);
-    }
+  // ---- Decide a visibilidade inicial do botão ----
+  if(isStandalone()){
+    hideBtn();                          // já instalado / rodando como app → nunca mostra
+  } else if(isIOS() || isAndroid()){
+    showBtn();                          // mobile: mostra sempre (iOS não dispara beforeinstallprompt)
   }
-  if(iosClose){ iosClose.addEventListener('click', function(){ iosHint.classList.remove('show'); try{ localStorage.setItem('iosHintDismissed','1'); }catch(e){} }); }
-  maybeIOSHint();
+  // Desktop sem prompt: o botão aparece quando o beforeinstallprompt chegar.
 
-  // Esconde o botão se já estiver instalado/rodando como app.
-  if(isStandalone() && installBtn) installBtn.classList.remove('show');
-  window.ArcadePWA={ isStandalone:isStandalone, canInstall:function(){ return !!installEvt; } };
+  // Se o app passar para standalone durante a sessão, esconde o botão.
+  if(window.matchMedia){
+    try{ window.matchMedia('(display-mode: standalone)').addEventListener('change', function(ev){ if(ev.matches) hideBtn(); }); }catch(e){}
+  }
+
+  window.ArcadePWA={ isStandalone:isStandalone, isIOS:isIOS, openInstall:openModal, canInstall:function(){ return !!installEvt; } };
 })();
 </script>
 </body>
