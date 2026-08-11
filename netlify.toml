@@ -1,0 +1,18 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+[build.environment]
+  NODE_VERSION = "20"
+
+# PWA: o service worker precisa poder controlar todo o site.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+    Service-Worker-Allowed = "/"
+[[headers]]
+  for = "/site.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json; charset=utf-8"
+
+# Ícones são ARQUIVOS REAIS na raiz — sem redirects (evita 404 e cair no index).
