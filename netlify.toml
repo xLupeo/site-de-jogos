@@ -1,0 +1,16 @@
+# Configuração do Netlify — ARCADE Setor 7
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# NÃO há redirect de ícones aqui de propósito: os ícones agora são ARQUIVOS
+# REAIS na raiz (favicon.ico, apple-touch-icon.png, icon-*.png). Arquivos
+# estáticos têm precedência sobre qualquer redirect no Netlify, então os
+# pedidos automáticos do navegador (/favicon.ico, /apple-touch-icon.png)
+# recebem a imagem correta — e NUNCA caem no index.html.
+#
+# A função do placar já define sua própria rota (/api/leaderboard) via
+# `export const config` dentro de netlify/functions/leaderboard.mjs.
