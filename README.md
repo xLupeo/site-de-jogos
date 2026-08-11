@@ -29,16 +29,6 @@
 
 ---
 
-## 🖼️ Preview
-
-> As imagens abaixo ilustram o hub (grade de jogos) e a jogabilidade em cada plataforma.
-
-| Desktop | Mobile |
-|:-------:|:------:|
-| *hub com 9 jogos + placar global* | *tela cheia, controles por toque/swipe* |
-
----
-
 ## 🕹️ Os jogos
 
 | Jogo | Descrição | Ranking |
@@ -159,16 +149,6 @@ Front‑end 100% estático; o placar usa uma *function* serverless.
 - **Netlify** (deploy por *drag & drop* da pasta, ou via GitHub) ✅ *recomendado*
 - Vercel / Cloudflare Pages (para o placar, configure a *function* equivalente)
 - GitHub Pages *(apenas o front‑end; sem o placar online)*
-
----
-
-## 🗺️ Roadmap
-
-- [ ] Captura de telas na pasta `docs/`
-- [ ] Banner discreto de "atualização disponível"
-- [ ] Rate‑limit anti‑spam no placar
-- [ ] Novos jogos (Nonograma, Sudoku, Xadrez)
-- [ ] Notificações via Web Push
 
 ---
 
